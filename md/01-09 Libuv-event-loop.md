@@ -6,7 +6,7 @@
 2. Callback Queue
 3. Thread Pool
 
-- Asynchronous I/O (Non Blocking I/O) onl;y done by Libuv
+- Asynchronous I/O (Non Blocking I/O) only done by Libuv
 
 > Libuv async task returns response but if V8 (main thread) is not free or busy then this task kept in Callback Queue of Libuv. After V8 CallStack become free or ideal then task push in CallStack of V8 from Callback Queue of Libuv
 
