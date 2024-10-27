@@ -1,40 +1,30 @@
 const express = require("express");
 
 const app = express();
+app.use("/admin", (err, req, res, next) => {
+  // check admin condition
+  if (err) {
+    res.status(500).send(err);
+  }
+  console.log("admin middleware");
+  next();
+  // else
+  // res.send("no admin");
+});
 
-/* app.use("/hello", (req, res) => {
-  res.send("Welcome to Hello routes");
+app.post("/admin/add", (req, res, next) => {
+  throw new Error("error in admin post add");
+  res.send("add done");
 });
-app.use("/test", (req, res) => {
-  res.send("Welcome to test route");
-});
-app.use("/", (req, res) => {
-  res.send("Welcome to Dev Tinders");
-});*/
-/* app.get("/ab?c", (req, res) => {
-  res.json({ message: "ab?c is optional b text" });
-});
-app.get("/a(bc)?d", (req, res) => {
-  res.json({ message: "a(bc)?d is optional bc route" });
-});
-app.get("/ab+c", (req, res) => {
-  res.json({ message: "ab+c is multiple b text" });
-});
-app.get("/a(bc)+d", (req, res) => {
-  res.json({ message: "a(bc)+d is multiple bc text" });
-}); 
-
-app.get("/ab*cd", (req, res) => {
-  res.json({ message: "ab*cd is any between ab and cd will work" });
-});*/
-
-app.get("/home", (req, res) => {
-  console.log(req.query);
-  res.json(req.query);
-});
-app.get("/list/:id/:name", (req, res) => {
-  console.log(req.params);
-  res.json(req.params);
+app.get("/admin/id", (req, res, next) => {
+  try {
+    console.log("admin get id");
+    throw new Error("error in admin get id");
+    res.send("get done");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("error in admin get id catch");
+  }
 });
 app.listen(5000, () => {
   console.log("dev tinders backend running on http://localhost:5000/");
