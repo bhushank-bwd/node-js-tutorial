@@ -1,31 +1,32 @@
 const express = require("express");
+const connectDB = require("./config/database");
+const User = require("./model/user");
 
 const app = express();
-app.use("/admin", (err, req, res, next) => {
-  // check admin condition
-  if (err) {
-    res.status(500).send(err);
+
+app.post("/sign-up", async (req, res) => {
+  const userObject = new User({
+    firstName: "fnm",
+    lastName: "lnm",
+    emailId: "fnm@lnm.com",
+    password: "Fmn@123",
+  }); // create new instance of USer model
+
+  try {
+    await userObject.save();
+    res.send("User Added successfully!");
+  } catch (err) {
+    res.status(400).send("Error saving the user:" + err.message);
   }
-  console.log("admin middleware");
-  next();
-  // else
-  // res.send("no admin");
 });
 
-app.post("/admin/add", (req, res, next) => {
-  throw new Error("error in admin post add");
-  res.send("add done");
-});
-app.get("/admin/id", (req, res, next) => {
-  try {
-    console.log("admin get id");
-    throw new Error("error in admin get id");
-    res.send("get done");
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("error in admin get id catch");
-  }
-});
-app.listen(5000, () => {
-  console.log("dev tinders backend running on http://localhost:5000/");
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
+    app.listen(5000, () => {
+      console.log("Server is successfully listening on port 7777...");
+    });
+  })
+  .catch((err) => {
+    console.error("Database cannot be connected!!");
+  });
